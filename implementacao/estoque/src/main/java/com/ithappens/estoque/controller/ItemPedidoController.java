@@ -19,7 +19,7 @@ public class ItemPedidoController {
     private final ItemPedidoService itemPedidoService;
 
     @PostMapping
-    public ResponseEntity salvar(@Valid @RequestBody ItemPedido itemPedido){
+    public ResponseEntity salvar(@RequestBody ItemPedido itemPedido){
         return new ResponseEntity(itemPedidoService.salvar(itemPedido), HttpStatus.CREATED);
     }
 }
