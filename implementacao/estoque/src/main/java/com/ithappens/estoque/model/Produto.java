@@ -4,9 +4,11 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -35,5 +37,9 @@ public class Produto implements Serializable {
     @Size(min = 13, max = 13, message = "O código de barras deve possuir 13 dígitos")
     @Column(name = "codigo_barras")
     private String codigoBarras;
+
+    @NotNull(message = "Informe o valor unitário do produto")
+    @Column(name = "valor_unitario")
+    private BigDecimal valorUnitario;
 
 }
