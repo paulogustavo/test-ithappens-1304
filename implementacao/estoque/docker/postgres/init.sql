@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10.3
--- Dumped by pg_dump version 10.3
+-- Dumped from database version 12.1
+-- Dumped by pg_dump version 12.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -12,26 +12,13 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
 SET default_tablespace = '';
 
-SET default_with_oids = false;
+SET default_table_access_method = heap;
 
 --
 -- Name: cliente; Type: TABLE; Schema: public; Owner: postgres
@@ -252,8 +239,8 @@ ALTER SEQUENCE public.pedido_estoque_id_pedido_estoque_seq OWNED BY public.pedid
 CREATE TABLE public.produto (
     id_produto bigint NOT NULL,
     descricao character varying(255) NOT NULL,
-    valor numeric NOT NULL,
-    codigo_barras character varying(15) NOT NULL
+    codigo_barras character varying(13) NOT NULL,
+    valor_unitario numeric NOT NULL
 );
 
 
@@ -456,6 +443,8 @@ ALTER TABLE ONLY public.usuario ALTER COLUMN id_usuario SET DEFAULT nextval('pub
 --
 
 COPY public.cliente (id_cliente, nome, cpf, telefone, endereco) FROM stdin;
+4	Marlene	17752812056	98999998888	Av. 05, 19, Jardim América
+5	Hildebrando	80025180045	98988889999	Rua 36, 1, Jardim América
 \.
 
 
@@ -464,6 +453,26 @@ COPY public.cliente (id_cliente, nome, cpf, telefone, endereco) FROM stdin;
 --
 
 COPY public.estoque (id_estoque, fk_id_filial, fk_id_produto, quantidade) FROM stdin;
+1	1	1	30
+2	1	2	40
+3	1	3	50
+4	1	4	100
+5	1	5	60
+6	1	6	75
+7	1	7	60
+8	1	8	80
+9	1	9	25
+10	1	10	70
+11	2	1	50
+12	2	2	25
+13	2	3	100
+14	2	4	40
+15	2	5	30
+16	2	6	60
+17	2	7	75
+18	2	8	65
+19	2	9	80
+20	2	10	50
 \.
 
 
@@ -472,6 +481,8 @@ COPY public.estoque (id_estoque, fk_id_filial, fk_id_produto, quantidade) FROM s
 --
 
 COPY public.filial (id_filial, nome) FROM stdin;
+1	Mix Mateus Cidade Operária
+2	Supermercado Mateus Tropical
 \.
 
 
@@ -480,6 +491,9 @@ COPY public.filial (id_filial, nome) FROM stdin;
 --
 
 COPY public.forma_pagamento (id_forma_pagamento, descricao) FROM stdin;
+1	À VISTA
+2	BOLETO
+3	CARTÃO
 \.
 
 
@@ -503,7 +517,17 @@ COPY public.pedido_estoque (id_pedido_estoque, fk_id_tipo_pedido_estoque, fk_id_
 -- Data for Name: produto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.produto (id_produto, descricao, valor, codigo_barras) FROM stdin;
+COPY public.produto (id_produto, descricao, codigo_barras, valor_unitario) FROM stdin;
+3	Biscoito Racheiro	5687544567456	3.5
+6	Amaciante Downy	8207544567453	6.23
+1	Leite Líquido Betania	1234567890128	4.5
+8	Manteiga Natural da Vaca	3177773322213	8.25
+4	Achocolatado Tres Coracoes	2104567890123	5.5
+10	Condicionador Palmolive	4581112224516	7.80
+2	Barra de Chocolate Talento	5554443322212	5.35
+7	Batata Palha Yoki	5563287890122	6.50
+9	Shampoo Clear Anticaspa	7964694567450	13.50
+5	Fécula Amafil	4154443322215	4.5
 \.
 
 
@@ -512,6 +536,9 @@ COPY public.produto (id_produto, descricao, valor, codigo_barras) FROM stdin;
 --
 
 COPY public.status_item_pedido (id_status_item_pedido, descricao) FROM stdin;
+1	ATIVO
+2	CANCELADO
+3	PROCESSADO
 \.
 
 
@@ -520,6 +547,8 @@ COPY public.status_item_pedido (id_status_item_pedido, descricao) FROM stdin;
 --
 
 COPY public.tipo_pedido_estoque (id_tipo_pedido_estoque, descricao) FROM stdin;
+1	ENTRADA
+2	SAÍDA
 \.
 
 
@@ -528,6 +557,7 @@ COPY public.tipo_pedido_estoque (id_tipo_pedido_estoque, descricao) FROM stdin;
 --
 
 COPY public.usuario (id_usuario, nome, username, senha) FROM stdin;
+1	Paulo Gustavo	paulogustavo	paulo@ithappens
 \.
 
 
@@ -535,28 +565,28 @@ COPY public.usuario (id_usuario, nome, username, senha) FROM stdin;
 -- Name: cliente_id_cliente_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.cliente_id_cliente_seq', 3, true);
+SELECT pg_catalog.setval('public.cliente_id_cliente_seq', 5, true);
 
 
 --
 -- Name: estoque_id_estoque_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.estoque_id_estoque_seq', 1, false);
+SELECT pg_catalog.setval('public.estoque_id_estoque_seq', 20, true);
 
 
 --
 -- Name: filial_id_filial_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.filial_id_filial_seq', 1, false);
+SELECT pg_catalog.setval('public.filial_id_filial_seq', 2, true);
 
 
 --
 -- Name: forma_pagamento_id_forma_pagamento_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.forma_pagamento_id_forma_pagamento_seq', 1, false);
+SELECT pg_catalog.setval('public.forma_pagamento_id_forma_pagamento_seq', 3, true);
 
 
 --
@@ -577,28 +607,28 @@ SELECT pg_catalog.setval('public.pedido_estoque_id_pedido_estoque_seq', 1, false
 -- Name: produto_id_produto_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.produto_id_produto_seq', 1, false);
+SELECT pg_catalog.setval('public.produto_id_produto_seq', 10, true);
 
 
 --
 -- Name: status_item_pedido_id_status_item_pedido_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.status_item_pedido_id_status_item_pedido_seq', 1, false);
+SELECT pg_catalog.setval('public.status_item_pedido_id_status_item_pedido_seq', 3, true);
 
 
 --
 -- Name: tipo_pedido_estoque_id_tipo_pedido_estoque_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.tipo_pedido_estoque_id_tipo_pedido_estoque_seq', 1, false);
+SELECT pg_catalog.setval('public.tipo_pedido_estoque_id_tipo_pedido_estoque_seq', 2, true);
 
 
 --
 -- Name: usuario_id_usuario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.usuario_id_usuario_seq', 1, false);
+SELECT pg_catalog.setval('public.usuario_id_usuario_seq', 1, true);
 
 
 --
