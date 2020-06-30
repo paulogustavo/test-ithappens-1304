@@ -15,6 +15,10 @@ import javax.validation.constraints.NotBlank;
 )
 public class StatusItemPedido {
 
+    public static long ATIVO = 1L;
+    public static long CANCELADO = 2L;
+    public static long PROCESSADO = 3L;
+
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
