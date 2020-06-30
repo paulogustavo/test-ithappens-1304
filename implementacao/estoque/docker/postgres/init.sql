@@ -167,7 +167,7 @@ CREATE TABLE public.item_pedido (
     fk_id_produto bigint NOT NULL,
     fk_id_status_item_pedido bigint NOT NULL,
     quantidade integer NOT NULL,
-    valor_unitario integer NOT NULL
+    valor_unitario numeric NOT NULL
 );
 
 
@@ -481,8 +481,8 @@ COPY public.estoque (id_estoque, fk_id_filial, fk_id_produto, quantidade) FROM s
 --
 
 COPY public.filial (id_filial, nome) FROM stdin;
-1	Mix Mateus Cidade Operária
 2	Supermercado Mateus Tropical
+1	Eletro Mateus Cidade Operária
 \.
 
 
@@ -502,6 +502,11 @@ COPY public.forma_pagamento (id_forma_pagamento, descricao) FROM stdin;
 --
 
 COPY public.item_pedido (id_item_pedido, fk_id_pedido_estoque, fk_id_produto, fk_id_status_item_pedido, quantidade, valor_unitario) FROM stdin;
+2	1	8	1	5	8.25
+1	1	1	1	3	4.5
+3	2	3	1	4	3.5
+4	2	5	1	5	4.5
+5	2	7	2	3	6.5
 \.
 
 
@@ -510,6 +515,8 @@ COPY public.item_pedido (id_item_pedido, fk_id_pedido_estoque, fk_id_produto, fk
 --
 
 COPY public.pedido_estoque (id_pedido_estoque, fk_id_tipo_pedido_estoque, fk_id_filial, fk_id_usuario, fk_id_cliente, fk_id_forma_pagamento, observacao) FROM stdin;
+1	1	2	1	\N	\N	\N
+2	2	2	1	4	1	obs
 \.
 
 
@@ -593,14 +600,14 @@ SELECT pg_catalog.setval('public.forma_pagamento_id_forma_pagamento_seq', 3, tru
 -- Name: item_pedido_id_item_pedido_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.item_pedido_id_item_pedido_seq', 1, false);
+SELECT pg_catalog.setval('public.item_pedido_id_item_pedido_seq', 5, true);
 
 
 --
 -- Name: pedido_estoque_id_pedido_estoque_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.pedido_estoque_id_pedido_estoque_seq', 1, false);
+SELECT pg_catalog.setval('public.pedido_estoque_id_pedido_estoque_seq', 2, true);
 
 
 --
