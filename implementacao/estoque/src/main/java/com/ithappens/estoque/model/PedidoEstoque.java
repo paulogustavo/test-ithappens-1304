@@ -16,6 +16,9 @@ import java.io.Serializable;
 )
 public class PedidoEstoque implements Serializable {
 
+    public static long ENTRADA = 1L;
+    public static long SAIDA = 2L;
+
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
@@ -49,7 +52,7 @@ public class PedidoEstoque implements Serializable {
     @JoinColumn(name = "fk_id_forma_pagamento")
     private FormaPagamento formaPagamento;
 
-    @Column(name = "quantidade")
+    @Column(name = "observacao")
     private String observacao;
 
 }
