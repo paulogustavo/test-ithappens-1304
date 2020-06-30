@@ -45,11 +45,7 @@ public class ItemPedido implements Serializable {
     @Column(name = "quantidade")
     private Integer quantidade;
 
-    @NotNull(message = "Informe o valor unitário do produto")
     @Column(name = "valor_unitario")
     private BigDecimal valorUnitario;
-
-    @Column(name = "valor_total")
-    private BigDecimal valorTotal;
 
 }
