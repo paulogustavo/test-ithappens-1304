@@ -167,7 +167,7 @@ CREATE TABLE public.item_pedido (
     fk_id_produto bigint NOT NULL,
     fk_id_status_item_pedido bigint NOT NULL,
     quantidade integer NOT NULL,
-    valor_unitario numeric NOT NULL
+    valor_unitario numeric
 );
 
 
@@ -482,7 +482,7 @@ COPY public.estoque (id_estoque, fk_id_filial, fk_id_produto, quantidade) FROM s
 
 COPY public.filial (id_filial, nome) FROM stdin;
 2	Supermercado Mateus Tropical
-1	Eletro Mateus Cidade Operária
+1	Mix Mateus João Paulo
 \.
 
 
