@@ -41,13 +41,13 @@ public class PedidoEstoqueController {
     }
 
     @PostMapping(value = "/finalizarPedidoEntrada/{idPedido}")
-    public ResponseEntity<PedidoEstoque> finalizarPedidoEntrada(@PathVariable Long id) {
-        return new ResponseEntity<>(pedidoEstoqueService.finalizaPedidoEstoque(id, null), HttpStatus.OK);
+    public ResponseEntity<PedidoEstoque> finalizarPedidoEntrada(@PathVariable("idPedido") Long idPedido) {
+        return new ResponseEntity<>(pedidoEstoqueService.finalizaPedidoEstoque(idPedido, null), HttpStatus.OK);
     }
 
     @PostMapping(value = "/finalizarPedidoSaida/{idPedido}/{idFormaPagamento}")
-    public ResponseEntity<PedidoEstoque> finalizarPedidoSaida(@PathVariable Long id, @PathVariable Long idFormaPagamento) {
-        return new ResponseEntity<>(pedidoEstoqueService.finalizaPedidoEstoque(id, idFormaPagamento), HttpStatus.OK);
+    public ResponseEntity<PedidoEstoque> finalizarPedidoSaida(@PathVariable Long idPedido, @PathVariable Long idFormaPagamento) {
+        return new ResponseEntity<>(pedidoEstoqueService.finalizaPedidoEstoque(idPedido, idFormaPagamento), HttpStatus.OK);
     }
 
 }
