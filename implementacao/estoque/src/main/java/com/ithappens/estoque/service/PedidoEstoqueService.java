@@ -37,7 +37,7 @@ public class PedidoEstoqueService {
 
     private PedidoEstoque persistePedidoEstoque(PedidoEstoque pedidoEstoque){
         verificaExistenciaValoresInformadosNaBase(pedidoEstoque);
-        verificaClienteEObservacao(pedidoEstoque);
+        verificaCamposPedidoSaida(pedidoEstoque);
 
         return pedidoEstoqueRepository.save(pedidoEstoque);
     }
@@ -52,10 +52,10 @@ public class PedidoEstoqueService {
         if(!tipoPedidoEstoqueRepository.findById(pedidoEstoque.getTipoPedidoEstoque().getId()).isPresent())
             throw new EstoqueCustomException("Tipo de pedido informado é inválido");
 
-        verificaFormaPagamento(pedidoEstoque.getFormaPagamento().getId());
+
     }
 
-    private void verificaClienteEObservacao(PedidoEstoque pedidoEstoque){
+    private void verificaCamposPedidoSaida(PedidoEstoque pedidoEstoque){
         if(pedidoEstoque.getTipoPedidoEstoque().getId().equals(PedidoEstoque.SAIDA)){
             if(pedidoEstoque.getCliente() == null || pedidoEstoque.getCliente().getId() == null)
                 throw new EstoqueCustomException("É necessário informar o cliente quando o tipo do pedido for saída");
@@ -81,19 +81,11 @@ public class PedidoEstoqueService {
 
     @Transactional
     public PedidoEstoque finalizaPedidoEstoque(Long idPedido, Long idFormaPagamento){
-        verificaFormaPagamento(idFormaPagamento);
-        verificaPedido(idPedido);
-
-        Optional<PedidoEstoque> pedidoEstoqueOptional = pedidoEstoqueRepository.findById(idPedido);
-        Optional<FormaPagamento> formaPagamentoOptional = formaPagamentoRepository.findById(idFormaPagamento);
-
-        if(pedidoEstoqueOptional.isPresent()){
-            if(!formaPagamentoOptional.isPresent()){
-                throw new EstoqueCustomException("Forma de pagamento inválida");
-            }
-            return processarPedidoEstoque(pedidoEstoqueOptional.get());
-        } else throw new EstoqueCustomException("Pedido inválido");
-
+        PedidoEstoque pedidoEstoque = verificaPedido(idPedido);
+        if(pedidoEstoque.getTipoPedidoEstoque().getId().equals(TipoPedidoEstoque.SAIDA)){
+            pedidoEstoque.setFormaPagamento(verificaFormaPagamento(idFormaPagamento));
+        }
+        return processarPedidoEstoque(pedidoEstoque);
     }
 
     public PedidoEstoque processarPedidoEstoque(PedidoEstoque pedidoEstoque){
@@ -166,16 +158,21 @@ public class PedidoEstoqueService {
         itemPedidoRepository.save(itemPedido);
     }
 
-    private void verificaFormaPagamento(Long idFormaPagamento){
+    private FormaPagamento verificaFormaPagamento(Long idFormaPagamento){
         if(idFormaPagamento == null) throw new EstoqueCustomException("É necessário informar a forma de pagamento");
-        if(!formaPagamentoRepository.findById(idFormaPagamento).isPresent())
+        Optional<FormaPagamento> formaPagamentoOptional = formaPagamentoRepository.findById(idFormaPagamento);
+        if(!formaPagamentoOptional.isPresent())
             throw new EstoqueCustomException("Forma de pagamento informada é inválida");
+        else return formaPagamentoOptional.get();
     }
 
-    private void verificaPedido(Long idPedido){
+    private PedidoEstoque verificaPedido(Long idPedido){
         if(idPedido == null) throw new EstoqueCustomException("É necessário informar o código do pedido");
-        if(!pedidoEstoqueRepository.findById(idPedido).isPresent())
+        Optional<PedidoEstoque> pedidoOptional = pedidoEstoqueRepository.findById(idPedido);
+        if(!pedidoOptional.isPresent())
             throw new EstoqueCustomException("Pedido informado é inválido");
+        else
+            return pedidoOptional.get();
     }
 
 
