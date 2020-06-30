@@ -16,6 +16,9 @@ import java.io.Serializable;
 )
 public class TipoPedidoEstoque implements Serializable {
 
+    public static long ENTRADA = 1L;
+    public static long SAIDA = 2L;
+
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
