@@ -42,7 +42,6 @@ public class PedidoEstoque implements Serializable {
     @JoinColumn(name = "fk_id_usuario")
     private Usuario usuario;
 
-    @NotNull(message = "Informe o código do cliente")
     @ManyToOne
     @JoinColumn(name = "fk_id_cliente")
     private Cliente cliente;
